@@ -54,6 +54,18 @@ class Client(object):
             for j in range(y, y + height):
                 self.sendPixel(i, j, '%02x%02x%02x' % pixels[i, j])
 
+    def sendImage(self, path, offset=(0, 0), cutout=(0, 0, 0, 0)):
+        offsetx, offsety = offset
+        image = Image.open(path)
+        pixel = image.load()
+        width, height = image.size
+        for x in range(width):
+            for y in range(height):
+                r, g, b, alpha = pixel[x, y]
+                if alpha != 0:
+                    message = ("PX {} {} {}\n".format(x + offsetx, y + offsety, '%02x%02x%02x%02x' % pixel[x, y])).encode('ascii')
+                    self.telnet.write(message)
+
     def sendGIF(self, path, offset=(0, 0), cutout=(0, 0, 0, 0), resize=False):
         frames = self.__processImage(path)
         offsetx, offsety = offset
