@@ -15,6 +15,7 @@ class TimeLED:
         self.formertext = ''
         self.formerhour = -1
         self.color = (255, 0, 0)
+        self.datecolor = (30, 30, 30)
         self.online = True
 
     def writeCenteredText(self, text):
@@ -25,6 +26,15 @@ class TimeLED:
         except:
             print("Unexpected error on setting display: " + str(sys.exc_info()))
 
+    def writeBottomText(self, text):
+        try:
+            client = Client("192.168.178.48", "1234")
+            client.sendText(text, color=self.datecolor, offset=(0, 23), fontfile="spleen-5x8.pil", horizontalCentered=True)
+            client.close()
+        except:
+            print("Unexpected error on setting display: " + str(sys.exc_info()))
+
+
     def clearMatrix(self):
         try:
             client = Client("192.168.178.48", "1234")
@@ -33,8 +43,15 @@ class TimeLED:
         except:
             print("Could not clear matrix: " + str(sys.exc_info()))
 
-    def setLED(self, now):
-        date = now.strftime("%a %-d.%-m.%Y")
+    def setDate(self, now):
+        date = now.strftime("%d %b")
+        if self.formerdate != date:
+            print(date)
+            self.writeBottomText(date)
+
+        self.formerdate = date
+
+    def setTime(self, now):
         text = now.strftime("%H:%M")
         if self.formertext != text:
             print(text)
@@ -45,22 +62,6 @@ class TimeLED:
 
         self.formertext = text
 		
-        """
-        if self.formerdate != date:
-            print(date)
-            try:
-                blue = graphics.Color(0, 0, 255)
-                # TODO: Only clear date row
-                graphics.DrawText(display, font, 8, 10, blue, date)
-            except:
-                print("Unexpected error on setting date")
-                blue = graphics.Color(0, 0, 255)
-                # TODO: Only clear date row
-                graphics.DrawText(display, font, 8, 10, blue, "Cannot set date")
-
-        self.formerdate = date
-        """
-
         if self.formerhour != now.hour:
             if now.hour < 8 or now.hour > 18:
                 self.color = (180, 0, 0)
@@ -85,12 +86,14 @@ if __name__ == '__main__':
 
     timeLED = TimeLED()
     timeLED.clearMatrix()
+    time.sleep(2)
 
     # Schedule offline check
     schedule.every(1).minutes.do(timeLED.checkOnline)
 
     while(True):
-        timeLED.setLED(datetime.now())
+        timeLED.setTime(datetime.now())
+        timeLED.setDate(datetime.now())
         schedule.run_pending()
         time.sleep(1)
 

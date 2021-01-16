@@ -22,7 +22,12 @@ Available client features:
 * getSize
 * sendPixel
 * sendText
+* sendImage
 * sendGif
+
+## Examples
+
+This repository contains certain example scripts that use the client.
 
 ## Licenses
 
