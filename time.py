@@ -34,6 +34,13 @@ class TimeLED:
         except:
             print("Unexpected error on setting display: " + str(sys.exc_info()))
 
+    def setBrightness(self, brightness):
+        try:
+            client = Client("192.168.178.48", "1234")
+            client.setBrightness(brightness)
+            client.close()
+        except:
+            print("Unexpected error on setting brightness: " + str(sys.exc_info()))
 
     def clearMatrix(self):
         try:
@@ -64,9 +71,9 @@ class TimeLED:
 		
         if self.formerhour != now.hour:
             if now.hour < 8 or now.hour > 18:
-                self.color = (180, 0, 0)
+                self.setBrightness(60)
             else:
-                self.color = (255, 0, 0)
+                self.setBrightness(100)
 
         self.formerhour = now.hour
 

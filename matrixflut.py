@@ -24,6 +24,10 @@ class Client(object):
         height = int(response.split()[2])
         return width, height
 
+    def setBrightness(self, brightness):
+        message = ("BRIGHTNESS {}\n".format(brightness)).encode('ascii')
+        self.telnet.write(message)
+
     def clearMatrix(self):
         #width, height = self.getSize()
         width = 64
