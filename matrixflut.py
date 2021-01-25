@@ -28,13 +28,13 @@ class Client(object):
         message = ("BRIGHTNESS {}\n".format(brightness)).encode('ascii')
         self.telnet.write(message)
 
-    def clearMatrix(self):
+    def clearMatrix(self, offset=(0,0), width = 64, height = 32):
         #width, height = self.getSize()
-        width = 64
-        height = 32
-        for x in range(width):
-            for y in range(height):
+        offsetx, offsety = offset
+        for x in range(0 + offsetx, width + offsetx):
+            for y in range(0 + offsety, height + offsety):
                 message = ("PX {} {} 000000ff\n".format(x, y)).encode('ascii')
+                print(message)
                 self.telnet.write(message)
 
     def sendText(self, text, color=(255, 0, 0), offset=(0, 0), fontfile="spleen-6x12.pil", horizontalCentered=False, verticalCentered=False):

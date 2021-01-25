@@ -11,11 +11,11 @@ if __name__ == '__main__':
 
     client = Client("192.168.178.48", "1234")
 
+    client.clearMatrix(offset = (52, 1), width=7, height=7)
+
     if args.width == 0:
         client.clearMatrix()
     else:
-        for x in range(args.x, args.x + args.width):
-            for y in range(args.y, args.y + args.height):
-                client.sendPixel(x, y, "000000ff")
+        client.clearMatrix(offset = (args.x, args.y), width=args.width, height=args.height)
 
     client.close()

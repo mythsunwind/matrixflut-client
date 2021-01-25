@@ -82,12 +82,25 @@ class TimeLED:
         if response != 0:
             print("Raspberry pi seems to be offline")
             self.online = False
-            self.writeCenteredText("Offline")
+            self.sendPixel(53, 2, "ffffff")
+            self.sendPixel(54, 2, "ffffff")
+            self.sendPixel(55, 2, "ffffff")
+            self.sendPixel(56, 2, "ffffff")
+            self.sendPixel(57, 2, "ff0000")
+            self.sendPixel(55, 4, "ff0000")
+            self.sendPixel(54, 4, "ffffff")
+            self.sendPixel(56, 4, "ffffff")
+            self.sendPixel(55, 6, "ffffff")
+            self.sendPixel(58, 1, "ff0000")
+            self.sendPixel(56, 3, "ff0000")
+            self.sendPixel(54, 5, "ff0000")
+            self.sendPixel(53, 6, "ff0000")
+            self.sendPixel(52, 7, "ff0000")
         else:
             # clear matrix once we're online again
             if self.online == False:
+                self.clearMatrix(offset = (52, 1), width=7, height=7)
                 self.online = True
-                self.writeCenteredText("       ")
 
 if __name__ == '__main__':
 
