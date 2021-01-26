@@ -24,7 +24,7 @@ if __name__ == '__main__':
             try:
                 client = Client("192.168.178.48", "1234")
                 rate = getValueFromApi()
-                client.sendText(rate, color=(247, 147, 26), offset=(0, 0), horizontalCentered=True, fontfile="spleen-5x8.pil")
+                client.sendText(rate, color=(247, 147, 26), offset=(17, 18), horizontalCentered=True, fontfile="spleen-5x8.pil")
             except:
                 log.error("Unexpected error on setting display: " + str(sys.exc_info()))
             finally:
