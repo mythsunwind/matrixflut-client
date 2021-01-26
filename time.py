@@ -14,22 +14,23 @@ class TimeLED:
         self.formerdate = ''
         self.formertext = ''
         self.formerhour = -1
-        self.color = (255, 0, 0)
-        self.datecolor = (30, 30, 30)
+        self.red = (255, 0, 0)
+        self.green = (47, 179, 47)
+        self.blue = (0, 153, 255)
         self.online = True
 
-    def writeCenteredText(self, text):
+    def writeTime(self, text):
         try:
             client = Client("192.168.178.48", "1234")
-            client.sendText(text, color=self.color, horizontalCentered=True, verticalCentered=True)
+            client.sendText(text, color=self.blue, offset=(17, 8), horizontalCentered=True)
             client.close()
         except:
             print("Unexpected error on setting display: " + str(sys.exc_info()))
 
-    def writeBottomText(self, text):
+    def writeDate(self, text):
         try:
             client = Client("192.168.178.48", "1234")
-            client.sendText(text, color=self.datecolor, offset=(0, 23), fontfile="spleen-5x8.pil", horizontalCentered=True)
+            client.sendText(text, color=self.blue, offset=(17, 0), fontfile="spleen-5x8.pil", horizontalCentered=True)
             client.close()
         except:
             print("Unexpected error on setting display: " + str(sys.exc_info()))
@@ -54,7 +55,7 @@ class TimeLED:
         date = now.strftime("%d %b")
         if self.formerdate != date:
             print(date)
-            self.writeBottomText(date)
+            self.writeDate(date)
 
         self.formerdate = date
 
@@ -62,10 +63,7 @@ class TimeLED:
         text = now.strftime("%H:%M")
         if self.formertext != text:
             print(text)
-            try:
-                self.writeCenteredText(text)
-            except:
-                self.writeCenteredText("Cannot set time")
+            self.writeTime(text)
 
         self.formertext = text
 		
@@ -82,24 +80,28 @@ class TimeLED:
         if response != 0:
             print("Raspberry pi seems to be offline")
             self.online = False
-            self.sendPixel(53, 2, "ffffff")
-            self.sendPixel(54, 2, "ffffff")
-            self.sendPixel(55, 2, "ffffff")
-            self.sendPixel(56, 2, "ffffff")
-            self.sendPixel(57, 2, "ff0000")
-            self.sendPixel(55, 4, "ff0000")
-            self.sendPixel(54, 4, "ffffff")
-            self.sendPixel(56, 4, "ffffff")
-            self.sendPixel(55, 6, "ffffff")
-            self.sendPixel(58, 1, "ff0000")
-            self.sendPixel(56, 3, "ff0000")
-            self.sendPixel(54, 5, "ff0000")
-            self.sendPixel(53, 6, "ff0000")
-            self.sendPixel(52, 7, "ff0000")
+            client = Client("192.168.178.48", "1234")
+            client.sendPixel(53, 2, "ffffff")
+            client.sendPixel(54, 2, "ffffff")
+            client.sendPixel(55, 2, "ffffff")
+            client.sendPixel(56, 2, "ffffff")
+            client.sendPixel(57, 2, "ff0000")
+            client.sendPixel(55, 4, "ff0000")
+            client.sendPixel(54, 4, "ffffff")
+            client.sendPixel(56, 4, "ffffff")
+            client.sendPixel(55, 6, "ffffff")
+            client.sendPixel(58, 1, "ff0000")
+            client.sendPixel(56, 3, "ff0000")
+            client.sendPixel(54, 5, "ff0000")
+            client.sendPixel(53, 6, "ff0000")
+            client.sendPixel(52, 7, "ff0000")
+            client.close()
         else:
             # clear matrix once we're online again
             if self.online == False:
-                self.clearMatrix(offset = (52, 1), width=7, height=7)
+                client = Client("192.168.178.48", "1234")
+                client.clearMatrix(offset = (52, 1), width=7, height=7)
+                client.close()
                 self.online = True
 
 if __name__ == '__main__':
