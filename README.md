@@ -6,24 +6,24 @@ Client to send text, images or just individual pixels via Pixelflut protocol
 
 Add import in your project:
 
-`from matrixflut import Client`
+`from matrixflut import Endpoint, drawText`
 
 Draw red text on center of panel via pixelflut protocol:
 
 ```
-client = Client("192.168.0.1", "1337")
-client.sendText("Hello", color=(255, 0, 0), horizontalCentered=True, verticalCentered=True)
-client.close()
+endpoint = Endpoint("192.168.0.1", "1337")
+drawText(endpoint, "Hello", color=(255, 0, 0), horizontalCentered=True, verticalCentered=True)
 ```
 
 Available client features:
 
 * clearMatrix
 * getSize
-* sendPixel
-* sendText
-* sendImage
-* sendGif
+* setPixel
+* setBrightness
+* drawText
+* drawImage
+* drawGIF
 
 ## Examples
 
