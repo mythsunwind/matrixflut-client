@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw, ImageFont
+from matrixflut import Endpoint, drawText, Offset, setPixel, setBrightness, clearMatrix, Pixel
 from datetime import datetime
-from matrixflut import Client
 import schedule
 import os
 import sys
@@ -21,33 +21,29 @@ class TimeLED:
 
     def writeTime(self, text):
         try:
-            client = Client("192.168.178.48", "1234")
-            client.sendText(text, color=self.blue, offset=(17, 8), horizontalCentered=True)
-            client.close()
+            endpoint = Endpoint("192.168.178.48", "1234")
+            drawText(endpoint, text, color=self.blue, offset=Offset(17, 8), horizontalCentered=True)
         except:
             print("Unexpected error on setting display: " + str(sys.exc_info()))
 
     def writeDate(self, text):
         try:
-            client = Client("192.168.178.48", "1234")
-            client.sendText(text, color=self.blue, offset=(17, 0), fontfile="spleen-5x8.pil", horizontalCentered=True)
-            client.close()
+            endpoint = Endpoint("192.168.178.48", "1234")
+            drawText(endpoint, text, color=self.blue, offset=Offset(17, 0), fontfile="spleen-5x8.pil", horizontalCentered=True)
         except:
             print("Unexpected error on setting display: " + str(sys.exc_info()))
 
     def setBrightness(self, brightness):
         try:
-            client = Client("192.168.178.48", "1234")
-            client.setBrightness(brightness)
-            client.close()
+            endpoint = Endpoint("192.168.178.48", "1234")
+            setBrightness(endpoint, brightness)
         except:
             print("Unexpected error on setting brightness: " + str(sys.exc_info()))
 
     def clearMatrix(self):
         try:
-            client = Client("192.168.178.48", "1234")
-            client.clearMatrix()
-            client.close()
+            endpoint = Endpoint("192.168.178.48", "1234")
+            clearMatrix(endpoint)
         except:
             print("Could not clear matrix: " + str(sys.exc_info()))
 
@@ -76,36 +72,33 @@ class TimeLED:
         self.formerhour = now.hour
 
     def checkOnline(self):
-        response = os.system("/bin/ping -c 1 192.168.178.1")
+        response = os.system("/bin/ping -c 1 192.168.178.6")
         if response != 0:
             print("Raspberry pi seems to be offline")
             self.online = False
             try:
-                client = Client("192.168.178.48", "1234")
-                client.sendPixel(53, 2, "ffffff")
-                client.sendPixel(54, 2, "ffffff")
-                client.sendPixel(55, 2, "ffffff")
-                client.sendPixel(56, 2, "ffffff")
-                client.sendPixel(57, 2, "ff0000")
-                client.sendPixel(55, 4, "ff0000")
-                client.sendPixel(54, 4, "ffffff")
-                client.sendPixel(56, 4, "ffffff")
-                client.sendPixel(55, 6, "ffffff")
-                client.sendPixel(58, 1, "ff0000")
-                client.sendPixel(56, 3, "ff0000")
-                client.sendPixel(54, 5, "ff0000")
-                client.sendPixel(53, 6, "ff0000")
-                client.sendPixel(52, 7, "ff0000")
+                endpoint = Endpoint("192.168.178.48", "1234")
+                setPixel(endpoint, Pixel(53, 2, "ffffff"))
+                setPixel(endpoint, Pixel(54, 2, "ffffff"))
+                setPixel(endpoint, Pixel(55, 2, "ffffff"))
+                setPixel(endpoint, Pixel(56, 2, "ffffff"))
+                setPixel(endpoint, Pixel(57, 2, "ff0000"))
+                setPixel(endpoint, Pixel(55, 4, "ff0000"))
+                setPixel(endpoint, Pixel(54, 4, "ffffff"))
+                setPixel(endpoint, Pixel(56, 4, "ffffff"))
+                setPixel(endpoint, Pixel(55, 6, "ffffff"))
+                setPixel(endpoint, Pixel(58, 1, "ff0000"))
+                setPixel(endpoint, Pixel(56, 3, "ff0000"))
+                setPixel(endpoint, Pixel(54, 5, "ff0000"))
+                setPixel(endpoint, Pixel(53, 6, "ff0000"))
+                setPixel(endpoint, Pixel(52, 7, "ff0000"))
             except:
-                log.error("Unexpected error: " + str(sys.exc_info()))
-            finally:
-                client.close()
+                print("Unexpected error: " + str(sys.exc_info()))
         else:
             # clear matrix once we're online again
             if self.online == False:
-                client = Client("192.168.178.48", "1234")
-                client.clearMatrix(offset = (52, 1), width=7, height=7)
-                client.close()
+                endpoint = Endpoint("192.168.178.48", "1234")
+                clearMatrix(endpoint, offset = Offset(52, 1), width=7, height=7)
                 self.online = True
 
 if __name__ == '__main__':

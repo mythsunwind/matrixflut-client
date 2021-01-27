@@ -1,4 +1,4 @@
-from matrixflut import Client
+from matrixflut import Endpoint, clearMatrix, Offset
 import argparse
 
 if __name__ == '__main__':
@@ -9,13 +9,10 @@ if __name__ == '__main__':
     parser.add_argument("-height", type=int, default=0)
     args = parser.parse_args()
 
-    client = Client("192.168.178.48", "1234")
-
-    client.clearMatrix(offset = (52, 1), width=7, height=7)
-
-    if args.width == 0:
-        client.clearMatrix()
+    endpoint = Endpoint("192.168.178.48", "1234")
+    if args.x == 0:
+        clearMatrix(endpoint=endpoint)
     else:
-        client.clearMatrix(offset = (args.x, args.y), width=args.width, height=args.height)
+        offset = Offset(51, 1)
+        clearMatrix(endpoint=endpoint, offset=offset, width=7, height=7)
 
-    client.close()

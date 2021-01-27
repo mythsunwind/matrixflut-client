@@ -1,4 +1,4 @@
-from matrixflut import Client
+from matrixflut import Endpoint, drawText, Offset
 import logging
 import sys
 import argparse
@@ -14,12 +14,7 @@ if __name__ == '__main__':
     parser.add_argument("-y", "--offsety", type=int, default=0)
     args = parser.parse_args()
 
-    try:
-        client = Client("192.168.178.48", "1234")
-        client.sendText(args.text, color=(30,30,30), offset=(args.offsetx, args.offsety), fontfile="spleen-5x8.pil", horizontalCentered=True)
-        client.close()
+    endpoint = Endpoint("192.168.178.48", "1234")
+    offset = Offset(args.offsetx, args.offsety)
+    drawText(endpoint=endpoint, text=args.text, color=(30,30,30), offset=offset, fontfile="spleen-5x8.pil", horizontalCentered=True)
 
-    except KeyboardInterrupt:
-        log.info("Stopping...")
-    finally:
-        client.close()
