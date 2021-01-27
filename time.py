@@ -72,7 +72,7 @@ class TimeLED:
         self.formerhour = now.hour
 
     def checkOnline(self):
-        response = os.system("/bin/ping -c 1 192.168.178.6")
+        response = os.system("/bin/ping -c 1 192.168.178.1")
         if response != 0:
             print("Raspberry pi seems to be offline")
             self.online = False
