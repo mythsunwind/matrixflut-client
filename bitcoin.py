@@ -17,7 +17,6 @@ if __name__ == '__main__':
 
     try:
         endpoint = Endpoint("192.168.178.48", "1234")
-        clearMatrix(endpoint)
 
         while(True):
             try:
