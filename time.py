@@ -66,7 +66,7 @@ class TimeLED:
             self.writeTime(text)
 
         self.formertext = text
-		
+
         if self.formerhour != now.hour:
             if now.hour < 8 or now.hour > 18:
                 self.setBrightness(60)
@@ -80,22 +80,26 @@ class TimeLED:
         if response != 0:
             print("Raspberry pi seems to be offline")
             self.online = False
-            client = Client("192.168.178.48", "1234")
-            client.sendPixel(53, 2, "ffffff")
-            client.sendPixel(54, 2, "ffffff")
-            client.sendPixel(55, 2, "ffffff")
-            client.sendPixel(56, 2, "ffffff")
-            client.sendPixel(57, 2, "ff0000")
-            client.sendPixel(55, 4, "ff0000")
-            client.sendPixel(54, 4, "ffffff")
-            client.sendPixel(56, 4, "ffffff")
-            client.sendPixel(55, 6, "ffffff")
-            client.sendPixel(58, 1, "ff0000")
-            client.sendPixel(56, 3, "ff0000")
-            client.sendPixel(54, 5, "ff0000")
-            client.sendPixel(53, 6, "ff0000")
-            client.sendPixel(52, 7, "ff0000")
-            client.close()
+            try:
+                client = Client("192.168.178.48", "1234")
+                client.sendPixel(53, 2, "ffffff")
+                client.sendPixel(54, 2, "ffffff")
+                client.sendPixel(55, 2, "ffffff")
+                client.sendPixel(56, 2, "ffffff")
+                client.sendPixel(57, 2, "ff0000")
+                client.sendPixel(55, 4, "ff0000")
+                client.sendPixel(54, 4, "ffffff")
+                client.sendPixel(56, 4, "ffffff")
+                client.sendPixel(55, 6, "ffffff")
+                client.sendPixel(58, 1, "ff0000")
+                client.sendPixel(56, 3, "ff0000")
+                client.sendPixel(54, 5, "ff0000")
+                client.sendPixel(53, 6, "ff0000")
+                client.sendPixel(52, 7, "ff0000")
+            except:
+                log.error("Unexpected error: " + str(sys.exc_info()))
+            finally:
+                client.close()
         else:
             # clear matrix once we're online again
             if self.online == False:
