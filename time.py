@@ -1,12 +1,9 @@
 from PIL import Image, ImageDraw, ImageFont
 from matrixflut import Endpoint, drawText, Offset, setPixel, setBrightness, clearMatrix, Pixel
 from datetime import datetime
-import schedule
 import os
 import sys
 import time
-
-size = (64, 32)
 
 class TimeLED:
 
@@ -71,48 +68,13 @@ class TimeLED:
 
         self.formerhour = now.hour
 
-    def checkOnline(self):
-        response = os.system("/bin/ping -c 1 192.168.178.1")
-        if response != 0:
-            print("Raspberry pi seems to be offline")
-            self.online = False
-            try:
-                endpoint = Endpoint("192.168.178.48", "1234")
-                setPixel(endpoint, Pixel(53, 2, "ffffff"))
-                setPixel(endpoint, Pixel(54, 2, "ffffff"))
-                setPixel(endpoint, Pixel(55, 2, "ffffff"))
-                setPixel(endpoint, Pixel(56, 2, "ffffff"))
-                setPixel(endpoint, Pixel(57, 2, "ff0000"))
-                setPixel(endpoint, Pixel(55, 4, "ff0000"))
-                setPixel(endpoint, Pixel(54, 4, "ffffff"))
-                setPixel(endpoint, Pixel(56, 4, "ffffff"))
-                setPixel(endpoint, Pixel(55, 6, "ffffff"))
-                setPixel(endpoint, Pixel(58, 1, "ff0000"))
-                setPixel(endpoint, Pixel(56, 3, "ff0000"))
-                setPixel(endpoint, Pixel(54, 5, "ff0000"))
-                setPixel(endpoint, Pixel(53, 6, "ff0000"))
-                setPixel(endpoint, Pixel(52, 7, "ff0000"))
-            except:
-                print("Unexpected error: " + str(sys.exc_info()))
-        else:
-            # clear matrix once we're online again
-            if self.online == False:
-                endpoint = Endpoint("192.168.178.48", "1234")
-                clearMatrix(endpoint, offset = Offset(52, 1), width=7, height=7)
-                self.online = True
-
 if __name__ == '__main__':
 
     timeLED = TimeLED()
-    timeLED.clearMatrix()
     time.sleep(2)
-
-    # Schedule offline check
-    schedule.every(1).minutes.do(timeLED.checkOnline)
 
     while(True):
         timeLED.setTime(datetime.now())
         timeLED.setDate(datetime.now())
-        schedule.run_pending()
         time.sleep(1)
 
