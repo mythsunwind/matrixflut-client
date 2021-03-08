@@ -11,22 +11,21 @@ class TimeLED:
         self.formerdate = ''
         self.formertext = ''
         self.formerhour = -1
-        self.red = (255, 0, 0)
-        self.green = (47, 179, 47)
         self.blue = (0, 153, 255)
-        self.online = True
+        self.color = (80, 0, 0)
+        self.dyecolor = (255, 0, 0)
 
     def writeTime(self, text):
         try:
             endpoint = Endpoint("192.168.178.48", "1234")
-            drawText(endpoint, text, color=self.blue, offset=Offset(17, 8), horizontalCentered=True)
+            drawText(endpoint, text, color=self.color, dyecolor=dyecolor, offset=Offset(17, 8), horizontalCentered=True)
         except:
             print("Unexpected error on setting display: " + str(sys.exc_info()))
 
     def writeDate(self, text):
         try:
             endpoint = Endpoint("192.168.178.48", "1234")
-            drawText(endpoint, text, color=self.blue, offset=Offset(17, 0), fontfile="spleen-5x8.pil", horizontalCentered=True)
+            drawText(endpoint, text, color=self.color, dyecolor=dyecolor, offset=Offset(17, 0), fontfile="spleen-5x8.pil", horizontalCentered=True)
         except:
             print("Unexpected error on setting display: " + str(sys.exc_info()))
 

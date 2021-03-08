@@ -56,7 +56,7 @@ def clearMatrix(endpoint: Endpoint, offset=Offset(0, 0), width = 64, height = 32
             telnet.write(message)
     telnet.close()
 
-def drawText(endpoint: Endpoint, text: str, color=(255, 0, 0), offset=Offset(0, 0), fontfile="spleen-6x12.pil", horizontalCentered=False, verticalCentered=False):
+def drawText(endpoint: Endpoint, text: str, color=(255, 0, 0), offset=Offset(0, 0), fontfile="spleen-6x12.pil", horizontalCentered=False, verticalCentered=False, dyecolor=None):
     size = (64, 32)
     image = Image.new('RGB', size)
     draw = ImageDraw.Draw(image)
@@ -72,6 +72,12 @@ def drawText(endpoint: Endpoint, text: str, color=(255, 0, 0), offset=Offset(0, 
         y = offset.y
     draw.text((x, y), text, fill=color, font=font)
     pixels = image.load()
+    if dyecolor != None:
+        for k in range(x, x + width):
+            for l in range(y, y + int(height / 3) + 1):
+                if pixels[k, l] != (0, 0, 0):
+                    print("{},{}".format(k, l))
+                    pixels[k, l] = dyecolor
     telnet = telnetlib.Telnet(endpoint.host, endpoint.port)
     for i in range(x, x + width):
         for j in range(y, y + height):
