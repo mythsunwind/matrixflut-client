@@ -12,7 +12,7 @@ class TimeLED:
         self.formertext = ''
         self.formerhour = -1
         self.blue = (0, 153, 255)
-        self.color = (80, 0, 0)
+        self.color = (204, 0, 0)
         self.dyecolor = (255, 0, 0)
 
     def writeTime(self, text):
