@@ -33,9 +33,12 @@ def checkOnline():
     else:
         # clear matrix once we're online again
         if online == False:
-            endpoint = Endpoint("192.168.178.48", "1234")
-            clearMatrix(endpoint, offset = Offset(52, 1), width=7, height=7)
-            online = True
+            try:
+                endpoint = Endpoint("192.168.178.48", "1234")
+                clearMatrix(endpoint, offset = Offset(52, 1), width=7, height=7)
+                online = True
+            except:
+                print("Unexpected error: " + str(sys.exc_info()))
 
 
 if __name__ == '__main__':
