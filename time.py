@@ -18,14 +18,14 @@ class TimeLED:
     def writeTime(self, text):
         try:
             endpoint = Endpoint("192.168.178.48", "1234")
-            drawText(endpoint, text, color=self.color, dyecolor=dyecolor, offset=Offset(17, 8), horizontalCentered=True)
+            drawText(endpoint, text, color=self.color, dyecolor=self.dyecolor, offset=Offset(17, 8), horizontalCentered=True)
         except:
             print("Unexpected error on setting display: " + str(sys.exc_info()))
 
     def writeDate(self, text):
         try:
             endpoint = Endpoint("192.168.178.48", "1234")
-            drawText(endpoint, text, color=self.color, dyecolor=dyecolor, offset=Offset(17, 0), fontfile="spleen-5x8.pil", horizontalCentered=True)
+            drawText(endpoint, text, color=self.color, dyecolor=self.dyecolor, offset=Offset(17, 0), fontfile="spleen-5x8.pil", horizontalCentered=True)
         except:
             print("Unexpected error on setting display: " + str(sys.exc_info()))
 
