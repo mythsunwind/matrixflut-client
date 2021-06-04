@@ -14,32 +14,29 @@ class TimeLED:
         self.blue = (0, 153, 255)
         self.color = (204, 0, 0)
         self.dyecolor = (255, 0, 0)
+        self.endpoint = Endpoint("192.168.178.48", "1234")
 
     def writeTime(self, text):
         try:
-            endpoint = Endpoint("192.168.178.48", "1234")
-            drawText(endpoint, text, color=self.color, dyecolor=self.dyecolor, offset=Offset(17, 8), horizontalCentered=True)
+            drawText(self.endpoint, text, color=self.color, dyecolor=self.dyecolor, offset=Offset(17, 8), horizontalCentered=True)
         except:
             print("Unexpected error on setting display: " + str(sys.exc_info()))
 
     def writeDate(self, text):
         try:
-            endpoint = Endpoint("192.168.178.48", "1234")
-            drawText(endpoint, text, color=self.color, dyecolor=self.dyecolor, offset=Offset(17, 0), fontfile="spleen-5x8.pil", horizontalCentered=True)
+            drawText(self.endpoint, text, color=self.color, dyecolor=self.dyecolor, offset=Offset(17, 0), fontfile="spleen-5x8.pil", horizontalCentered=True)
         except:
             print("Unexpected error on setting display: " + str(sys.exc_info()))
 
     def setBrightness(self, brightness):
         try:
-            endpoint = Endpoint("192.168.178.48", "1234")
-            setBrightness(endpoint, brightness)
+            setBrightness(self.endpoint, brightness)
         except:
             print("Unexpected error on setting brightness: " + str(sys.exc_info()))
 
     def clearMatrix(self):
         try:
-            endpoint = Endpoint("192.168.178.48", "1234")
-            clearMatrix(endpoint)
+            clearMatrix(self.endpoint)
         except:
             print("Could not clear matrix: " + str(sys.exc_info()))
 
