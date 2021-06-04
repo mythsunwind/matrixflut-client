@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from PIL import Image, ImageDraw, ImageFont
 import telnetlib
 import time
+import os
 
 @dataclass
 class Endpoint:
@@ -60,7 +61,8 @@ def drawText(endpoint: Endpoint, text: str, color=(255, 0, 0), offset=Offset(0, 
     size = (64, 32)
     image = Image.new('RGB', size)
     draw = ImageDraw.Draw(image)
-    font = ImageFont.load(fontfile)
+    path = os.path.dirname(os.path.realpath(__file__))
+    font = ImageFont.load(path + os.sep + fontfile)
     (width, height) = font.getsize(text)
     if horizontalCentered:
         x = int((size[0] - width) / 2)
